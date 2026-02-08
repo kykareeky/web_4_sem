@@ -42,12 +42,12 @@
 </code></pre>
        
         
-        <h2>Таблица</h2>
+        <h2>Различия языков</h2>
         <table>
             <?php
             echo '<tr>';
-            echo '<td>Статический html</td>';
-            echo '<td>Динамический PHP</td>';
+            echo '<td><b>Статический html</b></td>';
+            echo '<td><b>Динамический PHP</b></td>';
             echo '</tr>';
             ?>
             <tr>

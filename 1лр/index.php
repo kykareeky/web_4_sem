@@ -64,9 +64,9 @@ HTML-код, будет некачественным и ошибочным.</p>
         <table>
             <?php
             echo '<tr>';
-            echo '<td>Max баллов за семестр</td>';
-            echo '<td>Max оценка за работу</td>';
-            echo '<td>Max вес работы</td>';
+            echo '<td><b>Max баллов за семестр</b></td>';
+            echo '<td><b>Max оценка за работу</b></td>';
+            echo '<td><b>Max вес работы</b></td>';
             echo '</tr>';
             ?>
             <tr>
