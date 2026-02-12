@@ -10,16 +10,16 @@
     <header>
         <nav>
             <?php
-            $current_page = basename($_SERVER['PHP_SELF']);
-            $menu = [
+            $current_page = basename($_SERVER['PHP_SELF']); // содержит путь к текущему исполняемому скрипту относительно корня сайта 
+            $menu = [ //Ключи массива — имена файлов, значения — названия пунктов
                 'index.php' => 'Главная',
                 'page2.php' => 'Вопросы',
                 'page3.php' => 'Примеры'
             ];
             
-            foreach ($menu as $link => $name) {
-                $class = ($current_page == $link) ? 'class="selected"' : '';
-                echo "<a href=\"$link\" $class>$name</a> ";
+            foreach ($menu as $link => $name) {//цикл проходит по каждому элементу массива, где $link — имя файла, $name — текст ссылки
+                $class = ($current_page == $link) ? 'class="selected"' : '';//если $current_page и $link совпадают, то будет добавлен класс selected
+                echo "<a href=\"$link\" $class>$name</a> ";//формируется и выводится HTML-код ссылки
             }
             ?>
         </nav>
