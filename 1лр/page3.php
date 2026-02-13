@@ -7,23 +7,43 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <?php
-            $current_page = basename($_SERVER['PHP_SELF']);
-            $menu = [
-                'index.php' => 'Главная',
-                'page2.php' => 'Вопросы',
-                'page3.php' => 'Примеры'
-            ];
-            
-            foreach ($menu as $link => $name) {
-                $class = ($current_page == $link) ? 'class="selected"' : '';
-                echo "<a href=\"$link\" $class>$name</a> ";
-            }
-            ?>
-        </nav>
-    </header>
+<div class="header">
+    <div class="header-content">
+        <ul class="menu">
+            <li>
+                <a href="<?php
+                    $name='Главная';
+                    $link='index.php';
+                    $current_page=true;
+                    echo $link;
+                ?>"<?php
+                    if($current_page) echo ' class="selected-menu"';
+                ?>><?php echo $name; ?></a>
+            </li>
+            <li>
+                <a href="<?php
+                    $name='Вопросы';
+                    $link='page2.php';
+                    $current_page=false;
+                    echo $link;
+                ?>"<?php
+                    if($current_page) echo ' class="selected-menu"';
+                ?>><?php echo $name; ?></a>
+            </li>
+            <li>
+                <a href="<?php
+                    $name='Примеры';
+                    $link='page3.php';
+                    $current_page=false;
+                    echo $link;
+                ?>"<?php
+                    if($current_page) echo ' class="selected-menu"';
+                ?>><?php echo $name; ?></a>
+            </li>
+        </ul>
+    </div>
+</div>
+
 
     <main>
         <h1>Практические примеры</h1>
