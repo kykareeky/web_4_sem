@@ -14,7 +14,6 @@ body {
     position: relative;
 }
 
-
 body::before {
     content: '';
     position: fixed;
@@ -28,7 +27,8 @@ body::before {
     z-index: -1;
 }
 
-header {
+/* Шапка сайта */
+.header {
     background: linear-gradient(135deg, #3c6308 0%, #4a7c0f 100%);
     color: white;
     height: 70px;
@@ -38,12 +38,9 @@ header {
     padding: 0 20px;
     z-index: 1000;
     box-shadow: 0 4px 12px rgba(60, 99, 8, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }
 
-header::after {
+.header::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -53,12 +50,32 @@ header::after {
     background: linear-gradient(90deg, #8bc34a, #4caf50, #8bc34a);
 }
 
-nav {
+.header-content {
     display: flex;
-    gap: 15px;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    width: 100%;
 }
 
-nav a {
+.header-content h2 {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin: 0;
+    color: white;
+    letter-spacing: 0.5px;
+}
+
+/* Меню */
+.menu {
+    display: flex;
+    gap: 15px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu a {
     color: white;
     text-decoration: none;
     padding: 10px 20px;
@@ -67,20 +84,21 @@ nav a {
     font-weight: 500;
     position: relative;
     overflow: hidden;
+    display: inline-block;
 }
 
-nav a:hover {
+.menu a:hover {
     background-color: rgba(255, 255, 255, 0.15);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-nav a.selected {
+.menu a.selected-menu {
     background-color: rgba(255, 255, 255, 0.2);
     font-weight: 600;
 }
 
-nav a.selected::before {
+.menu a.selected-menu::before {
     content: '';
     position: absolute;
     bottom: 0;
@@ -92,6 +110,7 @@ nav a.selected::before {
     border-radius: 3px;
 }
 
+/* Основной контент */
 main {
     margin-top: 90px;
     padding: 30px;
@@ -328,18 +347,22 @@ main > * {
 
 /* Адаптивность */
 @media (max-width: 768px) {
-    header {
+    .header {
         height: 60px;
         padding: 0 15px;
     }
     
-    nav {
+    .menu {
         gap: 10px;
     }
     
-    nav a {
+    .menu a {
         padding: 8px 15px;
         font-size: 0.9em;
+    }
+    
+    .header-content h2 {
+        font-size: 1.2em;
     }
     
     main {
