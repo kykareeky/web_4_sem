@@ -87,3 +87,89 @@ header {
     box-sizing: border-box;
     padding-left: 20px;
 }
+ol {
+    margin: 25px 0;
+    padding-left: 40px;
+    background: #f8fff5;  /* Светло-зеленый фон */
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+ol li {
+    margin-bottom: 20px;  /* Отступ между вопросами */
+    line-height: 1.7;     /* Межстрочный интервал */
+    position: relative;
+    padding-left: 15px;
+}
+ol li {
+    margin-bottom: 20px;  /* Отступ между вопросами */
+    line-height: 1.7;     /* Межстрочный интервал */
+    position: relative;
+    padding-left: 15px;
+}
+ol li strong {
+    color: #3c6308;  /* Темно-зеленый */
+    background: linear-gradient(135deg, #e8f5e0, #f0f9e8);  /* Светло-зеленый градиент */
+    padding: 2px 8px;  /* Отступы вокруг текста */
+    border-radius: 4px;  /* Скругленные углы */
+    display: inline-block;
+}
+ol li ul {
+    margin-top: 12px;
+    padding-left: 25px;
+    list-style-type: none;
+}
+
+ol li ul li {
+    margin-bottom: 8px;
+    padding-left: 25px;
+    position: relative;
+}
+
+ol li ul li::before {
+    content: "•";  /* Символ маркера */
+    position: absolute;
+    left: 0;
+    color: #8bc34a;
+    font-size: 1.5em;
+}
+pre code {
+    color: #8bc34a;
+}
+main p {
+    margin: 20px 0;
+    line-height: 1.8;
+    padding: 15px 20px;
+    border-radius: 10px;
+    border-left: 4px solid #8bc34a;  /* Зеленая полоска слева */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+h2 {
+    color: #4a7c0f;
+    font-size: 1.8em;
+    margin: 30px 0 15px 0;
+    padding-left: 15px;
+}
+main {
+    max-width: 1200px;
+    margin-left: auto;    /* ← центрирование */
+    margin-right: auto;   /* ← центрирование */
+}
+
+footer {
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+    color: #cbd5e0;
+    height: 70px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+}
+code {
+    color: #5a9813;
+}
