@@ -342,7 +342,7 @@ pre code {
 }
 
 .block {
-    border: 2px solid red;
+    border: 2px solid #3c6308;
     padding: 10px;
     display: inline-block;
     min-width: 120px;
