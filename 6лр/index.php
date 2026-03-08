@@ -1,81 +1,85 @@
 <?php
-// Лабораторная работа № А-6
-// Обработка данных формы
+// лабораторная работа № А-6
+// обработка данных формы
 
-$show_results = false;
-$out_text = '';
-$email_sent_message = '';
+$show_results = false;               // флаг показа результатов
+$out_text = '';                       // буфер вывода отчёта
+$email_sent_message = '';              // сообщение о статусе отправки email
 
+// если форма отправлена методом post и присутствует поле 'a'
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['A'])) {
-    // Получение и очистка данных
-    $fio = trim($_POST['FIO'] ?? '');
-    $group = trim($_POST['GROUP'] ?? '');
-    $about = trim($_POST['ABOUT'] ?? '');
+    // получение и очистка данных из post-запроса
+    $fio = trim($_POST['FIO'] ?? '');                 // фио
+    $group = trim($_POST['GROUP'] ?? '');             // группа
+    $about = trim($_POST['ABOUT'] ?? '');             // информация о себе
+    // замена запятой на точку для корректного преобразования в число
     $a = str_replace(',', '.', trim($_POST['A'] ?? ''));
     $b = str_replace(',', '.', trim($_POST['B'] ?? ''));
     $c = str_replace(',', '.', trim($_POST['C'] ?? ''));
-    $user_answer = str_replace(',', '.', trim($_POST['result'] ?? ''));
-    $task = $_POST['TASK'] ?? '';
-    $view = $_POST['VIEW'] ?? 'browser';
-    $send_mail = isset($_POST['send_mail']);
-    $mail = trim($_POST['MAIL'] ?? '');
+    $user_answer = str_replace(',', '.', trim($_POST['result'] ?? '')); // ответ пользователя
+    $task = $_POST['TASK'] ?? '';                      // выбранная задача
+    $view = $_POST['VIEW'] ?? 'browser';                // режим отображения
+    $send_mail = isset($_POST['send_mail']);            // флаг отправки на email
+    $mail = trim($_POST['MAIL'] ?? '');                 // email для отправки
 
-    // Проверка, что A, B, C — числа
+    // проверка, что a, b, c — числа
     $valid_numbers = is_numeric($a) && is_numeric($b) && is_numeric($c);
     if (!$valid_numbers) {
         $out_text = '<p class="error">Ошибка: значения A, B, C должны быть числами.</p>';
     } else {
+        // преобразование строк в числа с плавающей точкой
         $a = (float)$a;
         $b = (float)$b;
         $c = (float)$c;
 
-        // Определение задачи и вычисление правильного ответа
-        $correct_result = null;
-        $task_name = '';
+        // определение задачи и вычисление правильного ответа
+        $correct_result = null;   // правильный результат
+        $task_name = '';          // название задачи
         switch ($task) {
-            case 'area_triangle':
+            case 'area_triangle':   // площадь треугольника по формуле герона
                 $task_name = 'Площадь треугольника (формула Герона)';
-                $s = ($a + $b + $c) / 2;
+                $s = ($a + $b + $c) / 2;   // полупериметр
+                // проверка существования треугольника (неравенство треугольника)
                 if ($a + $b > $c && $a + $c > $b && $b + $c > $a) {
                     $correct_result = sqrt($s * ($s - $a) * ($s - $b) * ($s - $c));
                 } else {
                     $correct_result = null; // треугольник не существует
                 }
                 break;
-            case 'perimeter':
+            case 'perimeter':       // периметр треугольника
                 $task_name = 'Периметр треугольника';
                 $correct_result = $a + $b + $c;
                 break;
-            case 'volume':
+            case 'volume':          // объём параллелепипеда
                 $task_name = 'Объем параллелепипеда';
                 $correct_result = $a * $b * $c;
                 break;
-            case 'average':
+            case 'average':         // среднее арифметическое
                 $task_name = 'Среднее арифметическое';
                 $correct_result = ($a + $b + $c) / 3;
                 break;
-            case 'sum_squares':
+            case 'sum_squares':     // сумма квадратов
                 $task_name = 'Сумма квадратов';
                 $correct_result = $a*$a + $b*$b + $c*$c;
                 break;
-            case 'max':
+            case 'max':             // максимальное из чисел
                 $task_name = 'Максимальное из чисел';
                 $correct_result = max($a, $b, $c);
                 break;
-            default:
+            default:                 // неизвестная задача
                 $task_name = 'Неизвестная задача';
         }
 
-        // Округление результата до 2 знаков
+        // округление правильного результата до двух знаков после запятой
         if (is_float($correct_result) || is_int($correct_result)) {
             $correct_result = round($correct_result, 2);
         }
 
-        // Обработка ответа пользователя
+        // обработка ответа пользователя: округление, если это число
         $user_answer_val = is_numeric($user_answer) ? round((float)$user_answer, 2) : null;
-        $user_answer_empty = ($user_answer === '');
+        $user_answer_empty = ($user_answer === '');   // флаг, что ответ не введён
 
-        // Формирование отчёта
+        // формирование html-отчёта
         $out_text = '<div class="report">';
         $out_text .= '<p><strong>ФИО:</strong> ' . htmlspecialchars($fio) . '</p>';
         $out_text .= '<p><strong>Группа:</strong> ' . htmlspecialchars($group) . '</p>';
@@ -86,17 +90,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['A'])) {
         $out_text .= '<p><strong>Входные данные:</strong> A = ' . $a . ', B = ' . $b . ', C = ' . $c . '</p>';
         $out_text .= '<p><strong>Ваш ответ:</strong> ' . ($user_answer_empty ? 'не был введен' : htmlspecialchars($_POST['result'])) . '</p>';
 
+        // анализ результата в зависимости от корректности вычислений
         if ($correct_result === null && $task === 'area_triangle' && !($a+$b>$c && $a+$c>$b && $b+$c>$a)) {
+            // случай несуществующего треугольника
             $out_text .= '<p><strong>Вычисленный программой результат:</strong> Треугольник не существует</p>';
             $out_text .= '<p><strong>Результат теста:</strong> Ошибка: тест не пройден</p>';
         } elseif ($correct_result === null) {
+            // другие случаи, когда результат не определён
             $out_text .= '<p><strong>Вычисленный программой результат:</strong> не определен</p>';
             $out_text .= '<p><strong>Результат теста:</strong> Ошибка: тест не пройден</p>';
         } else {
+            // результат определён – выводим его
             $out_text .= '<p><strong>Вычисленный программой результат:</strong> ' . $correct_result . '</p>';
             if ($user_answer_empty) {
                 $out_text .= '<p><strong>Результат теста:</strong> Задача самостоятельно решена не была</p>';
             } elseif ($user_answer_val === $correct_result) {
+                // строгое сравнение по значению и типу (оба числа)
                 $out_text .= '<p><strong>Результат теста:</strong> Тест пройден</p>';
             } else {
                 $out_text .= '<p><strong>Результат теста:</strong> Ошибка: тест не пройден</p>';
@@ -105,12 +114,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['A'])) {
         $out_text .= '</div>';
     }
 
-    // Отправка результата по email, если установлен флажок
+    // отправка результата по email, если установлен флажок и данные валидны
     if ($send_mail && !empty($mail) && $valid_numbers) {
+        // преобразование html-отчёта в простой текст
         $plain_text = strip_tags(str_replace('<br>', "\r\n", $out_text));
         $subject = 'Результат тестирования';
+        // заголовки письма (от кого, кодировка)
         $headers = "From: auto@mani.ru\r\n" .
                    "Content-Type: text/plain; charset=utf-8\r\n";
+        // попытка отправки
         if (mail($mail, $subject, $plain_text, $headers)) {
             $email_sent_message = '<p>Результаты теста были автоматически отправлены на e-mail ' . htmlspecialchars($mail) . '</p>';
         } else {
@@ -118,12 +130,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['A'])) {
         }
     }
 
-    $show_results = true;
+    $show_results = true;   // после обработки показываем отчёт
 }
 
-// Подготовка данных для формы (при первой загрузке или повторном тесте)
+// подготовка данных для формы при первой загрузке или повторном тесте
 $default_fio = htmlspecialchars($_GET['FIO'] ?? '', ENT_QUOTES);
 $default_group = htmlspecialchars($_GET['GROUP'] ?? '', ENT_QUOTES);
+// генерация случайных значений a, b, c с двумя знаками после запятой
 $default_a = mt_rand(0, 10000) / 100;
 $default_b = mt_rand(0, 10000) / 100;
 $default_c = mt_rand(0, 10000) / 100;
@@ -139,14 +152,15 @@ $default_c = mt_rand(0, 10000) / 100;
 <header>Лабораторная работа № А-6</header>
 <main>
 <?php if ($show_results): ?>
-    <!-- Вывод отчёта -->
+    <!-- вывод отчёта -->
     <?php echo $out_text; ?>
     <?php if (!empty($email_sent_message)) echo $email_sent_message; ?>
     <?php if ($view === 'browser'): ?>
+        <!-- ссылка для повторного теста с сохранением фио и группы -->
         <a href="?FIO=<?php echo urlencode($fio); ?>&GROUP=<?php echo urlencode($group); ?>" class="back-button">Повторить тест</a>
     <?php endif; ?>
 <?php else: ?>
-    <!-- Отображение формы -->
+    <!-- отображение формы ввода данных -->
     <div class="form-container">
         <form method="post" action="">
             <div class="form-row">
@@ -211,6 +225,7 @@ $default_c = mt_rand(0, 10000) / 100;
         </form>
     </div>
     <script>
+        // функция показа/скрытия поля email при клике на чекбокс
         function toggleEmail() {
             const emailBlock = document.getElementById('email_block');
             const checkbox = document.getElementById('send_mail');
@@ -223,6 +238,7 @@ $default_c = mt_rand(0, 10000) / 100;
                 emailInput.disabled = true;
             }
         }
+        // при загрузке страницы устанавливаем правильное состояние поля email
         window.onload = function() {
             const checkbox = document.getElementById('send_mail');
             if (checkbox && checkbox.checked) {
